@@ -51,7 +51,20 @@ export type EstimateResult = {
   chargedWeightKg: number;
   deliveryDaysMin: number;
   deliveryDaysMax: number;
+  source: "carrier" | "engine";
+  carrierName?: string;
+  carrierServiceType?: string;
+  rateExpiresAt?: string;
 };
+
+export function computeChargeableWeight(input: Pick<EstimateInput, "weightKg" | "lengthCm" | "widthCm" | "heightCm">): number {
+  const actualWeight = Math.max(0, input.weightKg);
+  const volumetric =
+    input.lengthCm && input.widthCm && input.heightCm
+      ? (input.lengthCm * input.widthCm * input.heightCm) / VOLUMETRIC_DIVISOR
+      : 0;
+  return Math.max(actualWeight, volumetric);
+}
 
 export function estimatePrice(input: EstimateInput): EstimateResult {
   const { origin, dest, service } = input;
@@ -63,11 +76,8 @@ export function estimatePrice(input: EstimateInput): EstimateResult {
   }
 
   const actualWeight = Math.max(0, input.weightKg);
-  const volumetric =
-    input.lengthCm && input.widthCm && input.heightCm
-      ? (input.lengthCm * input.widthCm * input.heightCm) / VOLUMETRIC_DIVISOR
-      : 0;
-  const chargedWeight = Math.max(actualWeight, volumetric);
+  const chargedWeight = computeChargeableWeight(input);
+  const volumetric = Math.max(0, chargedWeight - actualWeight);
 
   const sameCity = origin === dest;
   const sameCountry = originCountry === destCountry;
@@ -103,5 +113,6 @@ export function estimatePrice(input: EstimateInput): EstimateResult {
     chargedWeightKg: Math.round(chargedWeight * 100) / 100,
     deliveryDaysMin,
     deliveryDaysMax,
+    source: "engine",
   };
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { estimatePrice, serviceTypes, type EstimateResult, type ServiceType } from "@/lib/pricing";
+import { carrierConfigured, fetchCarrierEstimate } from "@/lib/carriers";
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
@@ -26,16 +27,27 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  const input = {
+    origin,
+    dest,
+    weightKg: weight,
+    service: service as ServiceType,
+    lengthCm: length,
+    widthCm: width,
+    heightCm: height,
+  };
+
   try {
-    const estimate: EstimateResult = estimatePrice({
-      origin,
-      dest,
-      weightKg: weight,
-      service: service as ServiceType,
-      lengthCm: length,
-      widthCm: width,
-      heightCm: height,
-    });
+    let estimate: EstimateResult | null = null;
+
+    if (carrierConfigured()) {
+      estimate = await fetchCarrierEstimate(input);
+    }
+
+    if (!estimate) {
+      estimate = estimatePrice(input);
+    }
+
     return NextResponse.json({ estimate });
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : "Unable to estimate price" }, { status: 400 });

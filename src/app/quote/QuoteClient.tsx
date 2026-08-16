@@ -239,9 +239,15 @@ export default function QuoteClient() {
                   {estimating ? (
                     <span className="inline-block w-40 h-10 bg-gray-200 animate-pulse rounded-lg align-middle" />
                   ) : (
-                    `KES ${estimatedPrice.toLocaleString()}`
+                    `${estimate?.currency ?? "KES"} ${estimatedPrice.toLocaleString()}`
                   )}
                 </div>
+
+                {estimate && !estimating && estimate.source === "carrier" && (
+                  <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                    ✅ Live carrier rates · {estimate.carrierName}
+                  </div>
+                )}
 
                 {estimate && (
                   <div className={`mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${estimate.crossBorder ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"}`}>
@@ -257,10 +263,16 @@ export default function QuoteClient() {
                   )}
                 </p>
 
-                {estimate?.crossBorder && (
+                {estimate?.crossBorder && estimate.source === "engine" && (
                   <div className="mt-4 p-3 bg-secondary/5 rounded-xl text-xs text-text-secondary">
                     Includes border clearance &amp; customs handling fee of{" "}
                     <span className="font-bold text-secondary">KES {estimate.borderFee.toLocaleString()}</span>. Duties and taxes may apply separately.
+                  </div>
+                )}
+
+                {estimate?.crossBorder && estimate.source === "carrier" && (
+                  <div className="mt-4 p-3 bg-secondary/5 rounded-xl text-xs text-text-secondary">
+                    Live quote from {estimate.carrierName}. Duties, taxes and customs clearance charges may apply separately.
                   </div>
                 )}
 
@@ -276,19 +288,34 @@ export default function QuoteClient() {
                       <span className="text-text-secondary">Route</span>
                       <span className="font-semibold">{form.originCity} → {form.destCity}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-text-secondary">Base rate</span>
-                      <span className="font-semibold">KES {estimate.baseRate.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-text-secondary">Weight charge ({estimate.chargedWeightKg} kg)</span>
-                      <span className="font-semibold">KES {estimate.weightCharge.toLocaleString()}</span>
-                    </div>
-                    {estimate.borderFee > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-text-secondary">Border fee</span>
-                        <span className="font-semibold">KES {estimate.borderFee.toLocaleString()}</span>
-                      </div>
+                    {estimate.source === "carrier" ? (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-text-secondary">Carrier rate ({estimate.carrierName})</span>
+                          <span className="font-semibold">{estimate.currency} {estimate.total.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-text-secondary">Charged weight</span>
+                          <span className="font-semibold">{estimate.chargedWeightKg} kg</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-text-secondary">Base rate</span>
+                          <span className="font-semibold">KES {estimate.baseRate.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-text-secondary">Weight charge ({estimate.chargedWeightKg} kg)</span>
+                          <span className="font-semibold">KES {estimate.weightCharge.toLocaleString()}</span>
+                        </div>
+                        {estimate.borderFee > 0 && (
+                          <div className="flex justify-between">
+                            <span className="text-text-secondary">Border fee</span>
+                            <span className="font-semibold">KES {estimate.borderFee.toLocaleString()}</span>
+                          </div>
+                        )}
+                      </>
                     )}
                     <div className="flex justify-between">
                       <span className="text-text-secondary">Service</span>
