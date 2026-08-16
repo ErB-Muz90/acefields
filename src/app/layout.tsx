@@ -51,13 +51,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               description: "Premier logistics and courier services across East Africa.",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Mombasa Road, Industrial Area",
-                addressLocality: "Nairobi",
+                streetAddress: "Port Area",
+                addressLocality: "Mombasa",
                 addressCountry: "KE",
               },
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+254725306678",
+                telephone: "+254721907730",
                 contactType: "customer service",
               },
               areaServed: ["Kenya", "Uganda", "Tanzania", "Rwanda", "Burundi", "DR Congo", "South Sudan"],

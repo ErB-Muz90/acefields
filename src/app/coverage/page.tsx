@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 const countries = [
   {
     flag: "🇰🇪", name: "Kenya", capital: "Nairobi", color: "bg-primary",
-    hubs: ["Nairobi (HQ)", "Mombasa (HQ)", "Kisumu", "Eldoret", "Nakuru", "Thika", "Nanyuki", "Malindi"],
+    hubs: ["Nairobi", "Mombasa (HQ)", "Kisumu", "Eldoret", "Nakuru", "Thika", "Nanyuki", "Malindi"],
     desc: "Our home base with the most comprehensive coverage. Same-day delivery in Nairobi, next-day to all major towns.",
   },
   {

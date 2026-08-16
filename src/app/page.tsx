@@ -23,8 +23,6 @@ const testimonials = [
   { name: "Amina Hassan", role: "Manufacturer, Dar es Salaam", text: "Reliable freight service for our manufacturing exports. Their tracking system gives us full visibility every step of the way." },
 ];
 
-const partners = ["Jumia", "Safaricom", "KCB Bank", "EABL", "Java House", "Tuskys"];
-
 export default function HomePage() {
   return (
     <>
@@ -271,18 +269,6 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Partners */}
-      <section className="py-16 bg-surface border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-text-muted mb-8 uppercase tracking-wider font-semibold">Trusted by leading companies</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
-            {partners.map((p) => (
-              <div key={p} className="text-xl font-bold text-text-muted/40 hover:text-text-muted/70 transition-colors">{p}</div>
             ))}
           </div>
         </div>
