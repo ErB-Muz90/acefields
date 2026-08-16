@@ -43,8 +43,9 @@ export default function ContactClient() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {[
               { icon: "📞", title: "Mombasa HQ", info: "+254 721 907 730\nPort Area, Mombasa", action: "tel:+254721907730" },
+              { icon: "📞", title: "Alternative Contact", info: "+254 725 306 678\nAvailable 24/7", action: "tel:+254725306678" },
               { icon: "✉️", title: "Email Us", info: "info@acefieldlogistics.com\nquote@acefieldlogistics.com", action: "mailto:info@acefieldlogistics.com" },
-              { icon: "💬", title: "WhatsApp", info: "+254 721 907 730\nAvailable 24/7", action: "https://wa.me/254721907730" },
+              { icon: "💬", title: "WhatsApp", info: "+254 725 306 678\nAvailable 24/7", action: "https://wa.me/254725306678" },
             ].map((c) => (
               <a key={c.title} href={c.action} className="p-6 bg-surface rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all text-center">
                 <div className="text-4xl mb-3">{c.icon}</div>
@@ -106,6 +107,7 @@ export default function ContactClient() {
                     <h3 className="font-bold text-lg text-accent">Mombasa HQ</h3>
                     <p className="text-text-secondary text-sm mt-1">Port Area<br />Mombasa, Kenya</p>
                     <p className="text-text-primary font-semibold mt-2">📞 +254 721 907 730</p>
+                    <p className="text-text-primary font-semibold mt-1">📞 +254 725 306 678</p>
                     <a
                       href="https://maps.google.com/?q=-4.0435,39.6682"
                       target="_blank"

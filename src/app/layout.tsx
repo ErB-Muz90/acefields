@@ -55,11 +55,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 addressLocality: "Mombasa",
                 addressCountry: "KE",
               },
-              contactPoint: {
-                "@type": "ContactPoint",
-                telephone: "+254721907730",
-                contactType: "customer service",
-              },
+              contactPoint: [
+                { "@type": "ContactPoint", telephone: "+254721907730", contactType: "customer service" },
+                { "@type": "ContactPoint", telephone: "+254725306678", contactType: "alternative contact" },
+              ],
               areaServed: ["Kenya", "Uganda", "Tanzania", "Rwanda", "Burundi", "DR Congo", "South Sudan"],
             }),
           }}

@@ -7,7 +7,7 @@ export function waLink(phone: string, text: string): string {
 }
 
 export function adminWhatsApp(): string {
-  return process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || "254721907730";
+  return process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || "254725306678";
 }
 
 export function quoteDetailsText(q: {
