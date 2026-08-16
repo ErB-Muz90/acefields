@@ -3,15 +3,7 @@ import { randomBytes } from "crypto";
 import { db } from "@/db";
 import { quotes, shipments, trackingEvents } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-function countryFromCity(city: string): string {
-  const c = city.trim().toLowerCase();
-  if (["nairobi", "mombasa", "kisumu", "eldoret", "nakuru"].includes(c)) return "Kenya";
-  if (["kampala", "entebbe", "jinja"].includes(c)) return "Uganda";
-  if (["dar es salaam", "arusha", "dodoma"].includes(c)) return "Tanzania";
-  if (["kigali", "butare"].includes(c)) return "Rwanda";
-  return "Burundi";
-}
+import { countryName } from "@/lib/locations";
 
 function generateTrackingId(): string {
   const d = new Date();
@@ -57,9 +49,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           recipientPhone,
           recipientAddress,
           originCity: quote.originCity,
-          originCountry: originCountry || countryFromCity(quote.originCity),
+          originCountry: originCountry || countryName(quote.originCity),
           destCity: quote.destCity,
-          destCountry: destCountry || countryFromCity(quote.destCity),
+          destCountry: destCountry || countryName(quote.destCity),
           weightKg: String(quote.weightKg),
           serviceType: quote.serviceType,
           status: "pending",

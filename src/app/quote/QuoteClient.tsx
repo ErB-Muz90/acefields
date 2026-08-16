@@ -1,32 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { waLink, adminWhatsApp, quoteDetailsText } from "@/lib/whatsapp";
+import { cities, countries, countryName, type CountryCode } from "@/lib/locations";
+import { serviceTypes, type EstimateResult, type ServiceType } from "@/lib/pricing";
 
-const cities = [
-  "Nairobi", "Mombasa", "Kisumu", "Eldoret", "Nakuru",
-  "Kampala", "Entebbe", "Jinja",
-  "Dar es Salaam", "Arusha", "Dodoma",
-  "Kigali", "Butare",
-  "Bujumbura", "Gitega",
-];
+const citiesByCountry = Object.keys(countries).map((code) => ({
+  code: code as CountryCode,
+  label: `${countries[code as CountryCode].flag} ${countries[code as CountryCode].name}`,
+  list: cities.filter((c) => c.country === code).map((c) => c.name),
+}));
 
-const serviceTypes = [
-  { value: "standard", label: "Standard (3-5 days)", multiplier: 1 },
-  { value: "express", label: "Express (1-2 days)", multiplier: 1.8 },
-  { value: "same_day", label: "Same-Day", multiplier: 2.5 },
-  { value: "freight", label: "Freight/Cargo", multiplier: 0.7 },
-];
-
-function calculatePrice(weight: number, origin: string, dest: string, service: string): number {
-  const countryOf = (city: string) => {
-    if (["Nairobi", "Mombasa", "Kisumu", "Eldoret", "Nakuru"].includes(city)) return "KE";
-    if (["Kampala", "Entebbe", "Jinja"].includes(city)) return "UG";
-    if (["Dar es Salaam", "Arusha", "Dodoma"].includes(city)) return "TZ";
-    if (["Kigali", "Butare"].includes(city)) return "RW";
-    return "BI";
-  };
-  const sameCountry = countryOf(origin) === countryOf(dest);
+function fallbackEstimate(weight: number, origin: string, dest: string, service: string): number {
+  const originCountry = countryName(origin);
+  const destCountry = countryName(dest);
+  const sameCountry = originCountry === destCountry;
   const sameCity = origin === dest;
   const baseRate = sameCity ? 150 : sameCountry ? 400 : 1200;
   const weightCharge = weight * (sameCountry ? 30 : 80);
@@ -38,17 +26,48 @@ export default function QuoteClient() {
   const [form, setForm] = useState({
     name: "", email: "", phone: "",
     originCity: "Nairobi", destCity: "Mombasa",
-    weightKg: "5", serviceType: "standard", message: "",
+    weightKg: "5", length: "", width: "", height: "",
+    serviceType: "standard", message: "",
   });
+  const [estimate, setEstimate] = useState<EstimateResult | null>(null);
+  const [estimating, setEstimating] = useState(true);
+  const [estimateError, setEstimateError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const estimatedPrice = calculatePrice(
-    parseFloat(form.weightKg) || 0,
-    form.originCity,
-    form.destCity,
-    form.serviceType
-  );
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      setEstimating(true);
+      setEstimateError(false);
+      const params = new URLSearchParams({
+        origin: form.originCity,
+        dest: form.destCity,
+        weight: form.weightKg,
+        service: form.serviceType,
+      });
+      if (form.length) params.set("length", form.length);
+      if (form.width) params.set("width", form.width);
+      if (form.height) params.set("height", form.height);
+      try {
+        const res = await fetch(`/api/quotes/estimate?${params}`);
+        if (!res.ok) throw new Error("Estimate failed");
+        const data = (await res.json()) as { estimate: EstimateResult };
+        setEstimate(data.estimate);
+      } catch {
+        setEstimateError(true);
+        setEstimate(null);
+      } finally {
+        setEstimating(false);
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [form.originCity, form.destCity, form.weightKg, form.length, form.width, form.height, form.serviceType]);
+
+  const estimatedPrice =
+    estimate?.total ??
+    (estimateError
+      ? fallbackEstimate(parseFloat(form.weightKg) || 0, form.originCity, form.destCity, form.serviceType)
+      : 0);
 
   const submittedWhatsAppLink = waLink(
     adminWhatsApp(),
@@ -116,7 +135,7 @@ export default function QuoteClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-black">Get a Quote</h1>
           <p className="text-xl text-white/70 mt-4 max-w-2xl mx-auto">
-            Calculate your shipping cost instantly. Fill in the details below.
+            Calculate your shipping cost instantly — including cross-border rates across East Africa and beyond.
           </p>
         </div>
       </section>
@@ -148,37 +167,62 @@ export default function QuoteClient() {
                   <label className="block text-sm font-semibold text-text-primary mb-1.5">Origin City *</label>
                   <select value={form.originCity} onChange={(e) => updateField("originCity", e.target.value)}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors bg-white">
-                    {cities.map((c) => <option key={c} value={c}>{c}</option>)}
+                    {citiesByCountry.map((group) => (
+                      <optgroup key={group.code} label={group.label}>
+                        {group.list.map((c) => <option key={c} value={c}>{c}</option>)}
+                      </optgroup>
+                    ))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-text-primary mb-1.5">Destination City *</label>
                   <select value={form.destCity} onChange={(e) => updateField("destCity", e.target.value)}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors bg-white">
-                    {cities.map((c) => <option key={c} value={c}>{c}</option>)}
+                    {citiesByCountry.map((group) => (
+                      <optgroup key={group.code} label={group.label}>
+                        {group.list.map((c) => <option key={c} value={c}>{c}</option>)}
+                      </optgroup>
+                    ))}
                   </select>
                 </div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-text-primary mb-1.5">Weight (kg) *</label>
                   <input type="number" min="0.1" step="0.1" required value={form.weightKg} onChange={(e) => updateField("weightKg", e.target.value)}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-text-primary mb-1.5">Service Type *</label>
-                  <select value={form.serviceType} onChange={(e) => updateField("serviceType", e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors bg-white">
-                    {serviceTypes.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                  </select>
+                  <label className="block text-sm font-semibold text-text-primary mb-1.5">Length (cm) <span className="font-normal text-text-muted">optional</span></label>
+                  <input type="number" min="1" step="1" value={form.length} onChange={(e) => updateField("length", e.target.value)} placeholder="e.g. 40"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors" />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-text-primary mb-1.5">Width</label>
+                    <input type="number" min="1" step="1" value={form.width} onChange={(e) => updateField("width", e.target.value)} placeholder="cm"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-text-primary mb-1.5">Height</label>
+                    <input type="number" min="1" step="1" value={form.height} onChange={(e) => updateField("height", e.target.value)} placeholder="cm"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-text-primary mb-1.5">Service Type *</label>
+                <select value={form.serviceType} onChange={(e) => updateField("serviceType", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors bg-white">
+                  {serviceTypes.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-text-primary mb-1.5">Additional Notes</label>
                 <textarea rows={3} value={form.message} onChange={(e) => updateField("message", e.target.value)}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none" />
               </div>
-              <button type="submit" disabled={loading}
+              <button type="submit" disabled={loading || estimating}
                 className="w-full py-4 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primary-light transition-all disabled:opacity-50 active:scale-[0.98]">
                 {loading ? "Submitting..." : "Submit Quote Request"}
               </button>
@@ -187,26 +231,71 @@ export default function QuoteClient() {
             {/* Price Calculator */}
             <div className="lg:sticky lg:top-28 h-fit">
               <div className="p-8 bg-surface rounded-2xl border border-gray-100">
-                <h3 className="text-lg font-bold mb-4">💰 Estimated Cost</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold">💰 Estimated Cost</h3>
+                  {estimating && <span className="text-xs text-text-muted animate-pulse">Calculating…</span>}
+                </div>
                 <div className="text-4xl font-black text-primary">
-                  KES {estimatedPrice.toLocaleString()}
+                  {estimating ? (
+                    <span className="inline-block w-40 h-10 bg-gray-200 animate-pulse rounded-lg align-middle" />
+                  ) : (
+                    `KES ${estimatedPrice.toLocaleString()}`
+                  )}
                 </div>
-                <p className="text-sm text-text-muted mt-1">*Final price may vary based on dimensions and specific requirements.</p>
 
-                <div className="mt-6 space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-text-secondary">Route</span>
-                    <span className="font-semibold">{form.originCity} → {form.destCity}</span>
+                {estimate && (
+                  <div className={`mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${estimate.crossBorder ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"}`}>
+                    {estimate.crossBorder ? `🌍 Cross-Border · ${estimate.originCountry} → ${estimate.destCountry}` : "🏠 Domestic Delivery"}
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-text-secondary">Weight</span>
-                    <span className="font-semibold">{form.weightKg} kg</span>
+                )}
+
+                <p className="text-sm text-text-muted mt-2">
+                  {estimate ? (
+                    <>Estimated delivery: <span className="font-semibold text-text-primary">{estimate.deliveryDaysMin === 0 ? "Same day" : `${estimate.deliveryDaysMin}–${estimate.deliveryDaysMax} days`}</span> · {estimate.chargedWeightKg} kg charged</>
+                  ) : (
+                    "*Final price may vary based on dimensions and specific requirements."
+                  )}
+                </p>
+
+                {estimate?.crossBorder && (
+                  <div className="mt-4 p-3 bg-secondary/5 rounded-xl text-xs text-text-secondary">
+                    Includes border clearance &amp; customs handling fee of{" "}
+                    <span className="font-bold text-secondary">KES {estimate.borderFee.toLocaleString()}</span>. Duties and taxes may apply separately.
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-text-secondary">Service</span>
-                    <span className="font-semibold">{serviceTypes.find((s) => s.value === form.serviceType)?.label}</span>
+                )}
+
+                {estimate && estimate.volumetricWeightKg > estimate.actualWeightKg && (
+                  <div className="mt-3 p-3 bg-accent/5 rounded-xl text-xs text-text-secondary">
+                    📦 Volumetric weight {estimate.volumetricWeightKg} kg applies (dimensions ÷ 5000), exceeding actual {estimate.actualWeightKg} kg.
                   </div>
-                </div>
+                )}
+
+                {estimate && (
+                  <div className="mt-6 space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-text-secondary">Route</span>
+                      <span className="font-semibold">{form.originCity} → {form.destCity}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-text-secondary">Base rate</span>
+                      <span className="font-semibold">KES {estimate.baseRate.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-text-secondary">Weight charge ({estimate.chargedWeightKg} kg)</span>
+                      <span className="font-semibold">KES {estimate.weightCharge.toLocaleString()}</span>
+                    </div>
+                    {estimate.borderFee > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-text-secondary">Border fee</span>
+                        <span className="font-semibold">KES {estimate.borderFee.toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-text-secondary">Service</span>
+                      <span className="font-semibold">{serviceTypes.find((s) => s.value === form.serviceType)?.label}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

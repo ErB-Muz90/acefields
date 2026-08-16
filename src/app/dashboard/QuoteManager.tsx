@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { waLink, invoiceText } from "@/lib/whatsapp";
+import { countryName } from "@/lib/locations";
 
 type Quote = {
   id: number;
@@ -33,12 +34,7 @@ type ShipmentDraft = {
 };
 
 function countryFromCity(city: string): string {
-  const c = city.trim().toLowerCase();
-  if (["nairobi", "mombasa", "kisumu", "eldoret", "nakuru"].includes(c)) return "Kenya";
-  if (["kampala", "entebbe", "jinja"].includes(c)) return "Uganda";
-  if (["dar es salaam", "arusha", "dodoma"].includes(c)) return "Tanzania";
-  if (["kigali", "butare"].includes(c)) return "Rwanda";
-  return "Burundi";
+  return countryName(city);
 }
 
 const statusLabels: Record<string, string> = {
