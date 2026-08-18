@@ -10,12 +10,12 @@ export const metadata: Metadata = {
     template: "%s | AceField Logistics",
   },
   description:
-    "Kenya's leading logistics company delivering parcel, freight, and cargo services across East Africa — Kenya, Uganda, Tanzania, Rwanda, and Burundi. Fast, reliable, affordable.",
+    "Kenya's leading courier services company delivering parcels, bulk consignments, and cargo by road across East Africa — Kenya, Uganda, Tanzania, Rwanda, and Burundi. Fast, reliable, affordable.",
   keywords: [
-    "logistics Kenya",
+    "courier services Kenya",
     "courier East Africa",
     "parcel delivery Nairobi",
-    "freight cargo Kenya",
+    "courier services lorry",
     "cross-border logistics",
     "same day delivery Kenya",
     "warehousing Nairobi",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "AceField Logistics — East Africa's Premier Logistics Partner",
-    description: "Fast, reliable logistics across Kenya, Uganda, Tanzania, Rwanda & Burundi.",
+    description: "Fast, reliable courier services across Kenya, Uganda, Tanzania, Rwanda & Burundi.",
     type: "website",
     locale: "en_KE",
   },
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               name: "AceField Logistics",
               url: "https://acefieldlogistics.com",
               logo: "https://acefieldlogistics.com/logo.png",
-              description: "Premier logistics and courier services across East Africa.",
+              description: "Premier courier services across East Africa.",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Port Area",

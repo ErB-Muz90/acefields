@@ -1,10 +1,10 @@
 import { countryOf, countries } from "./locations";
 
 export const serviceTypes = [
-  { value: "standard", label: "Standard (3-5 days)", multiplier: 1 },
-  { value: "express", label: "Express (1-2 days)", multiplier: 1.8 },
+  { value: "standard", label: "Standard (3-7 days)", multiplier: 1 },
+  { value: "express", label: "Express (1-3 days)", multiplier: 1.8 },
   { value: "same_day", label: "Same-Day", multiplier: 2.5 },
-  { value: "freight", label: "Freight/Cargo", multiplier: 0.7 },
+  { value: "courier", label: "Courier (Lorry)", multiplier: 0.7 },
 ] as const;
 
 export type ServiceType = (typeof serviceTypes)[number]["value"];
@@ -18,10 +18,10 @@ const RATES = {
 } as const;
 
 const DELIVERY_WINDOWS: Record<ServiceType, { domestic: [number, number]; eac: [number, number]; far: [number, number] }> = {
-  standard: { domestic: [2, 4], eac: [4, 7], far: [7, 12] },
-  express: { domestic: [1, 2], eac: [2, 4], far: [4, 7] },
-  same_day: { domestic: [0, 1], eac: [2, 4], far: [4, 7] },
-  freight: { domestic: [4, 7], eac: [7, 12], far: [12, 18] },
+  standard: { domestic: [2, 5], eac: [5, 10], far: [10, 16] },
+  express: { domestic: [1, 3], eac: [3, 6], far: [6, 10] },
+  same_day: { domestic: [0, 1], eac: [3, 7], far: [5, 12] },
+  courier: { domestic: [3, 7], eac: [7, 14], far: [14, 24] },
 };
 
 export type EstimateInput = {

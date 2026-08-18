@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "AceField Logistics offers parcel delivery, freight, same-day delivery, cross-border logistics, and warehousing across East Africa.",
+  description: "AceField Logistics offers courier services by road, parcel delivery, same-day delivery, cross-border logistics, and warehousing across East Africa.",
 };
 
 const services = [
@@ -13,9 +13,9 @@ const services = [
     features: ["Door-to-door pickup & delivery", "Real-time GPS tracking", "Proof of delivery (POD)", "Insurance up to KES 500K"],
   },
   {
-    icon: "🚛", title: "Freight & Cargo", slug: "freight-cargo",
-    desc: "Heavy-duty freight and cargo solutions for businesses — from full truckloads to partial shipments across the region.",
-    features: ["Full truckload (FTL) & less-than-truckload (LTL)", "Containerized cargo", "Customs clearance support", "Dedicated fleet management"],
+    icon: "🚛", title: "Courier Services", slug: "courier-services",
+    desc: "Lorry-based courier services for bulk goods and business consignments — we move heavy and large shipments by road across the region.",
+    features: ["Full truckload (FTL) & less-than-truckload (LTL)", "Lorry courier for large & heavy loads", "Customs clearance support", "Dedicated fleet management"],
   },
   {
     icon: "⚡", title: "Same-Day Delivery", slug: "same-day-delivery",
@@ -24,7 +24,7 @@ const services = [
   },
   {
     icon: "🌍", title: "Cross-Border Logistics", slug: "cross-border",
-    desc: "Seamless cross-border shipping between Kenya, Uganda, Tanzania, Rwanda & Burundi with customs handling.",
+    desc: "Seamless cross-border courier services between Kenya, Uganda, Tanzania, Rwanda & Burundi with customs handling.",
     features: ["Multi-country documentation", "Customs clearance & compliance", "Bonded transit warehousing", "Door-to-door international"],
   },
   {
@@ -41,7 +41,7 @@ export default function ServicesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-black">Our Services</h1>
           <p className="text-xl text-white/70 mt-4 max-w-2xl mx-auto">
-            Comprehensive logistics solutions tailored for East Africa&apos;s growing economy.
+            Comprehensive courier solutions tailored for East Africa&apos;s growing economy.
           </p>
         </div>
       </section>

@@ -3,9 +3,9 @@ import Image from "next/image";
 
 const services = [
   { icon: "📦", title: "Parcel Delivery", desc: "Door-to-door parcel delivery across Kenya and East Africa with real-time tracking.", href: "/services/parcel-delivery" },
-  { icon: "🚛", title: "Freight & Cargo", desc: "Heavy-duty freight solutions for businesses moving bulk goods regionally.", href: "/services/freight-cargo" },
+  { icon: "🚛", title: "Courier Services", desc: "Lorry-based courier services for bulk goods and business consignments across the region.", href: "/services/courier-services" },
   { icon: "⚡", title: "Same-Day Delivery", desc: "Urgent deliveries within Nairobi and major cities — guaranteed same-day.", href: "/services/same-day-delivery" },
-  { icon: "🌍", title: "Cross-Border Logistics", desc: "Seamless shipping between Kenya, Uganda, Tanzania, Rwanda & Burundi.", href: "/services/cross-border" },
+  { icon: "🌍", title: "Cross-Border Logistics", desc: "Seamless courier services between Kenya, Uganda, Tanzania, Rwanda & Burundi.", href: "/services/cross-border" },
   { icon: "🏭", title: "Warehousing", desc: "Secure, modern warehousing and order fulfillment services in Nairobi.", href: "/services/warehousing" },
   { icon: "💳", title: "M-Pesa Payments", desc: "Pay for shipments conveniently via M-Pesa — fast and secure transactions.", href: "/quote" },
 ];
@@ -20,7 +20,7 @@ const stats = [
 const testimonials = [
   { name: "Sarah Wanjiku", role: "E-Commerce Owner, Nairobi", text: "AceField Logistics transformed my e-commerce business. Same-day delivery in Nairobi and next-day across Kenya — my customers love it!" },
   { name: "David Omondi", role: "Logistics Manager, Kampala", text: "The cross-border service between Uganda and Kenya is seamless. Documentation, customs — they handle everything professionally." },
-  { name: "Amina Hassan", role: "Manufacturer, Dar es Salaam", text: "Reliable freight service for our manufacturing exports. Their tracking system gives us full visibility every step of the way." },
+  { name: "Amina Hassan", role: "Manufacturer, Dar es Salaam", text: "Reliable courier service for our manufacturing exports. Their lorry fleet and tracking system give us full visibility every step of the way." },
 ];
 
 export default function HomePage() {
@@ -48,7 +48,7 @@ export default function HomePage() {
                 Across East Africa
               </h1>
               <p className="text-lg text-white/80 mt-6 max-w-lg leading-relaxed">
-                Kenya&apos;s most trusted logistics partner. From parcel delivery to cross-border freight — 
+                Kenya&apos;s most trusted courier partner. From parcels to lorry-based courier services — 
                 we move your business forward with speed, reliability, and transparency.
               </p>
               <div className="flex flex-wrap gap-4 mt-8">
@@ -94,7 +94,7 @@ export default function HomePage() {
                 </div>
                 <div className="text-center py-3 bg-white/5 rounded-lg">
                   <div className="text-lg font-bold">🚛</div>
-                  <div className="text-xs text-white/60 mt-1">Freight</div>
+                  <div className="text-xs text-white/60 mt-1">Courier</div>
                 </div>
                 <div className="text-center py-3 bg-white/5 rounded-lg">
                   <div className="text-lg font-bold">🌍</div>
@@ -131,7 +131,7 @@ export default function HomePage() {
               Comprehensive Logistics Solutions
             </h2>
             <p className="text-text-secondary mt-4 leading-relaxed">
-              From same-day parcels in Nairobi to cross-border freight across East Africa — we have the perfect solution for every shipment.
+              From same-day parcels in Nairobi to cross-border courier services across East Africa — we have the perfect solution for every consignment.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

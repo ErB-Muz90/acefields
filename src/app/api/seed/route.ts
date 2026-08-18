@@ -36,7 +36,7 @@ export async function POST() {
         destCity: "Kampala",
         destCountry: "Uganda",
         weightKg: "25.00",
-        serviceType: "freight",
+        serviceType: "courier",
         status: "at_hub" as const,
         estimatedDelivery: new Date("2025-01-20"),
       },

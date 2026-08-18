@@ -19,7 +19,7 @@ type NetWorldwideQuote = {
 const SERVICE_MAP: Partial<Record<string, string>> = {
   standard: "STANDARD",
   express: "EXPRESS",
-  freight: "FREIGHT",
+  courier: "FREIGHT",
 };
 
 const cache = new Map<string, { expiresAt: number; estimate: EstimateResult | null }>();

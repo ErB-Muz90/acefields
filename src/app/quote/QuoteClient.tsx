@@ -135,7 +135,7 @@ export default function QuoteClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-black">Get a Quote</h1>
           <p className="text-xl text-white/70 mt-4 max-w-2xl mx-auto">
-            Calculate your shipping cost instantly — including cross-border rates across East Africa and beyond.
+            Calculate your courier cost instantly — including cross-border rates across East Africa and beyond.
           </p>
         </div>
       </section>
@@ -261,6 +261,10 @@ export default function QuoteClient() {
                   ) : (
                     "*Final price may vary based on dimensions and specific requirements."
                   )}
+                </p>
+
+                <p className="text-xs text-text-muted mt-3 leading-relaxed">
+                  ⚠️ Transit times depend on road conditions and the routes taken — some deliveries may take longer than 5 days.
                 </p>
 
                 {estimate?.crossBorder && estimate.source === "engine" && (

@@ -12,7 +12,7 @@ const navLinks = [
     label: "Services",
     children: [
       { href: "/services/parcel-delivery", label: "Parcel Delivery" },
-      { href: "/services/freight-cargo", label: "Freight & Cargo" },
+      { href: "/services/courier-services", label: "Courier Services" },
       { href: "/services/same-day-delivery", label: "Same-Day Delivery" },
       { href: "/services/cross-border", label: "Cross-Border Logistics" },
       { href: "/services/warehousing", label: "Warehousing & Fulfillment" },

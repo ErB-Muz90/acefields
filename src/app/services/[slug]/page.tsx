@@ -23,16 +23,16 @@ const servicesData: Record<string, {
     ],
     pricing: "From KES 200 for local, KES 500 for intercity",
   },
-  "freight-cargo": {
+  "courier-services": {
     icon: "🚛",
-    title: "Freight & Cargo",
-    tagline: "Heavy-duty logistics for business",
-    description: "Move bulk goods, raw materials, and commercial inventory with our comprehensive freight service. From full truckloads to containerized cargo, we handle the heavy lifting so you can focus on business.",
+    title: "Courier Services",
+    tagline: "Lorry-based courier for bulk & heavy loads",
+    description: "Our courier service moves bulk goods, business consignments, and heavy shipments by road using our lorry fleet. From full truckloads to partial loads, we handle the heavy lifting so you can focus on business. Transit times depend on road conditions and the route taken — some deliveries may take longer than 5 days.",
     features: [
-      { title: "Full & Partial Loads", desc: "FTL and LTL options to optimize your shipping costs." },
-      { title: "Containerized Shipping", desc: "20ft and 40ft container solutions for large-scale operations." },
-      { title: "Customs Support", desc: "Full documentation and clearance assistance for cross-border freight." },
-      { title: "Fleet Management", desc: "Dedicated vehicles and drivers for recurring shipping needs." },
+      { title: "Full & Partial Loads", desc: "FTL and LTL options to optimize your courier costs." },
+      { title: "Lorry Courier Network", desc: "Dedicated lorries moving large and heavy consignments across East Africa." },
+      { title: "Customs Support", desc: "Full documentation and clearance assistance for cross-border courier services." },
+      { title: "Fleet Management", desc: "Dedicated vehicles and drivers for recurring courier needs." },
     ],
     pricing: "Custom pricing based on volume and route",
   },
@@ -52,8 +52,8 @@ const servicesData: Record<string, {
   "cross-border": {
     icon: "🌍",
     title: "Cross-Border Logistics",
-    tagline: "Seamless shipping across 5 countries",
-    description: "Navigate the complexities of international shipping within East Africa. We handle customs, documentation, and regulatory compliance so your goods move freely across borders.",
+    tagline: "Seamless courier services across 5 countries",
+    description: "Navigate the complexities of cross-border courier services within East Africa. We handle customs, documentation, and regulatory compliance so your goods move freely across borders. Transit times vary depending on road conditions and the routes taken.",
     features: [
       { title: "5-Country Network", desc: "Kenya, Uganda, Tanzania, Rwanda, and Burundi with established routes." },
       { title: "Customs Clearance", desc: "Expert team handling all border documentation and compliance." },

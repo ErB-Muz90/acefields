@@ -83,7 +83,7 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">Services</h4>
             <ul className="space-y-2.5 text-sm text-white/60">
               <li><Link href="/services/parcel-delivery" className="hover:text-secondary transition-colors">Parcel Delivery</Link></li>
-              <li><Link href="/services/freight-cargo" className="hover:text-secondary transition-colors">Freight &amp; Cargo</Link></li>
+              <li><Link href="/services/courier-services" className="hover:text-secondary transition-colors">Courier Services</Link></li>
               <li><Link href="/services/same-day-delivery" className="hover:text-secondary transition-colors">Same-Day Delivery</Link></li>
               <li><Link href="/services/cross-border" className="hover:text-secondary transition-colors">Cross-Border Logistics</Link></li>
               <li><Link href="/services/warehousing" className="hover:text-secondary transition-colors">Warehousing &amp; Fulfillment</Link></li>
@@ -130,7 +130,7 @@ export default function Footer() {
             </ul>
             {/* WhatsApp */}
             <a
-href="https://wa.me/254725306678?text=Hello%20AceField%20Logistics%2C%20I%20need%20help%20with%20shipping."
+href="https://wa.me/254725306678?text=Hello%20AceField%20Logistics%2C%20I%20need%20help%20with%20courier%20services."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#25D366] text-white text-sm font-semibold rounded-lg hover:bg-[#20BD5A] transition-colors"
@@ -153,7 +153,7 @@ href="https://wa.me/254725306678?text=Hello%20AceField%20Logistics%2C%20I%20need
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/254725306678?text=Hello%20AceField%20Logistics%2C%20I%20need%20help%20with%20shipping."
+        href="https://wa.me/254725306678?text=Hello%20AceField%20Logistics%2C%20I%20need%20help%20with%20courier%20services."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform hover:shadow-xl"
